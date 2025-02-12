@@ -14,9 +14,10 @@ namespace timerApp.Desktop
             using (GameHost host = Host.GetSuitableDesktopHost(@"timerApp"))
             using (osu.Framework.Game game = new timerAppGame())
                 host.Run(game);
+            _ = updateMyApp();
         }
 
-        private static async Task UpdateMyApp()
+        private static async Task updateMyApp()
         {
             var mgr = new UpdateManager("https://github.com/GDcheerios/timerApp/releases/latest/download/");
 
