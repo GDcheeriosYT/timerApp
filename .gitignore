@@ -1,0 +1,9 @@
+.idea/
+.vscode/
+*.dll
+*.exe
+*.json
+*.plist
+*.cache
+*.txt
+/.editorconfig

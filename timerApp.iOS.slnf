@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "timerApp.sln",
+    "projects": [
+      "timerApp.Game\\timerApp.Game.csproj",
+      "timerApp.Resources\\timerApp.Resources.csproj",
+      "timerApp.iOS\\timerApp.iOS.csproj"
+    ]
+  }
+}
