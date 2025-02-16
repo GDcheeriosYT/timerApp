@@ -7,14 +7,16 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
+using osu.Framework.Platform.Windows;
 using osu.Framework.Screens;
 using osuTK;
 using WindowState = osu.Framework.Platform.WindowState;
 
 namespace timerApp.Game
 {
-    public partial class timerAppGame : timerAppGameBase
+    public partial class TimerAppGame : TimerAppGameBase
     {
         private ScreenStack screenStack;
         private Bindable<Projects> projects = new(Projects.test);
@@ -25,14 +27,19 @@ namespace timerApp.Game
         private SpriteText details;
         private bool readyToReset = false;
         private bool isStarted = false;
+        private DateTime startTime;
+        private DateTime endTime;
+        private Clipboard clipboard = new WindowsClipboard();
 
         public override void SetHost(GameHost host)
         {
             base.SetHost(host);
 
-            Size windowSize = new Size();
-            windowSize.Width = 640;
-            windowSize.Height = 400;
+            Size windowSize = new Size
+            {
+                Width = 640,
+                Height = 400
+            };
 
             if (host.Window != null)
             {
@@ -116,9 +123,18 @@ namespace timerApp.Game
             if (!isStarted)
             {
                 isStarted = true;
-                using var client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:8080");
-                client.GetAsync($"/start/{projectNumber}").Wait();
+                startTime = DateTime.Now;
+
+                try
+                {
+                    using var client = new HttpClient();
+                    client.BaseAddress = new Uri("http://localhost:8080");
+                    client.GetAsync($"/start/{projectNumber}").Wait();
+                }
+                catch (Exception e)
+                {
+                    Logger.Log("Couldn't send start request: " + e.Message, LoggingTarget.Network, LogLevel.Error);
+                }
             }
 
             readyToReset = false;
@@ -149,10 +165,24 @@ namespace timerApp.Game
             timer.Reset();
             pauseButton.Hide();
             isStarted = false;
+            endTime = DateTime.Now;
 
-            using var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8080");
-            client.GetAsync($"/end/{hours}").Wait();
+            try
+            {
+                using var client = new HttpClient();
+                client.BaseAddress = new Uri("http://localhost:8080");
+                client.GetAsync($"/end/{hours}").Wait();
+            }
+            catch (Exception e)
+            {
+                Logger.Log("Couldn't send end request: " + e.Message, LoggingTarget.Network, LogLevel.Error);
+            }
+
+            string started = startTime.ToString("yyyy-MM-dd HH:mm:ss");
+            string ended = endTime.ToString("yyyy-MM-dd HH:mm:ss");
+            string text = $"INSERT INTO shifts (project, started, ended, total) VALUES ({(int)projects.Value}, '{started}', '{ended}', {hours});";
+            clipboard.SetText(text);
+            Logger.Log($"copied '{text}'", LoggingTarget.Network, LogLevel.Important);
         }
     }
 }

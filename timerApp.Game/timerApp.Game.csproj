@@ -6,7 +6,7 @@
     <ProjectReference Include="..\timerApp.Resources\timerApp.Resources.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ppy.osu.Framework" Version="2025.129.1" />
+    <PackageReference Include="ppy.osu.Framework" Version="2025.204.0" />
     <PackageReference Include="Velopack" Version="0.0.1053" />
   </ItemGroup>
 </Project>

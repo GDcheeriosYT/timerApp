@@ -5,7 +5,7 @@ using osu.Framework.Testing;
 
 namespace timerApp.Game.Tests
 {
-    public partial class timerAppTestBrowser : timerAppGameBase
+    public partial class timerAppTestBrowser : TimerAppGameBase
     {
         protected override void LoadComplete()
         {

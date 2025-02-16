@@ -12,7 +12,7 @@ namespace timerApp.Desktop
         {
             VelopackApp.Build().Run();
             using (GameHost host = Host.GetSuitableDesktopHost(@"timerApp"))
-            using (osu.Framework.Game game = new timerAppGame())
+            using (osu.Framework.Game game = new TimerAppGame())
                 host.Run(game);
             _ = updateMyApp();
         }

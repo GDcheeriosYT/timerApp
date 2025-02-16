@@ -7,7 +7,7 @@ using timerApp.Resources;
 
 namespace timerApp.Game
 {
-    public partial class timerAppGameBase : osu.Framework.Game
+    public partial class TimerAppGameBase : osu.Framework.Game
     {
         // Anything in this class is shared between the test browser and the game implementation.
         // It allows for caching global dependencies that should be accessible to tests, or changing
@@ -15,7 +15,7 @@ namespace timerApp.Game
 
         protected override Container<Drawable> Content { get; }
 
-        protected timerAppGameBase()
+        protected TimerAppGameBase()
         {
             // Ensure game and tests scale with window size and screen DPI.
             base.Content.Add(Content = new DrawSizePreservingFillContainer
