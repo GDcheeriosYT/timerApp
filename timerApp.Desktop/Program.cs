@@ -11,10 +11,10 @@ namespace timerApp.Desktop
         public static void Main()
         {
             VelopackApp.Build().Run();
+            _ = updateMyApp();
             using (GameHost host = Host.GetSuitableDesktopHost(@"timerApp"))
             using (osu.Framework.Game game = new TimerAppGame())
                 host.Run(game);
-            _ = updateMyApp();
         }
 
         private static async Task updateMyApp()
